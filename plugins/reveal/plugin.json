@@ -1,0 +1,1 @@
+{"name":"在资源管理器中定位","version":"1.0","description":"打开所在文件夹并选中该文件","author":"NukeTree","command":"explorer.exe","args":"/select,\"{path}\""}

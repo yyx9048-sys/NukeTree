@@ -1,0 +1,31 @@
+name: publish-npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      # 构建 dist/NukeTree.exe（npm 包内含预编译 exe，不需要用户本地编译）
+      - name: Build binary
+        shell: pwsh
+        run: ./build.ps1
+
+      - name: Publish to npm
+        shell: pwsh
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

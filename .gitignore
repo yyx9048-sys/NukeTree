@@ -1,0 +1,21 @@
+﻿# 构建产物
+dist/
+*.exe
+*.pdb
+*.user
+
+# 运行时生成
+备份3D/
+launch.log
+settings.json
+plugins/state.json
+task.xml
+
+# 系统 / IDE
+.vs/
+.vscode/
+Thumbs.db
+desktop.ini
+
+# 本地发布产物
+release/

@@ -1,0 +1,48 @@
+name: build-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: pwsh
+        run: ./build.ps1
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          $ver = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $name = "NukeTree-$ver-win64"
+          New-Item -ItemType Directory -Force -Path release/$name | Out-Null
+          Copy-Item dist/* release/$name/ -Recurse -Force
+          Copy-Item README.md, LICENSE release/$name/ -Force
+          Compress-Archive -Path "release/$name" -DestinationPath "release/$name.zip" -Force
+          $hash = (Get-FileHash "release/$name.zip" -Algorithm SHA256).Hash
+          "$hash  $name.zip" | Set-Content "release/$name.sha256.txt"
+          echo "ASSET=release/$name.zip" >> $env:GITHUB_ENV
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NukeTree-win64
+          path: release/*.zip
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.zip
+            release/*.sha256.txt
+          generate_release_notes: true

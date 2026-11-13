@@ -1,0 +1,51 @@
+{
+  "name": "nuketree",
+  "version": "1.0.0",
+  "description": "Windows 3D dependency-tree app cleaner: visualize every file/registry/process dependency in an interactive 3D radial tree, delete apps completely with backup + residue verification.",
+  "keywords": [
+    "windows",
+    "uninstaller",
+    "cleaner",
+    "dependency",
+    "3d",
+    "winforms",
+    "desktop-app",
+    "powershell"
+  ],
+  "homepage": "https://github.com/<your-account>/NukeTree",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<your-account>/NukeTree.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<your-account>/NukeTree/issues"
+  },
+  "license": "MIT",
+  "author": "NukeTree contributors",
+  "bin": {
+    "nuketree": "bin/nuketree.js"
+  },
+  "files": [
+    "bin/",
+    "dist/NukeTree.exe",
+    "dist/NukeTree.ps1",
+    "dist/plugins/",
+    "dist/应用图标.ico",
+    "dist/应用图标.png",
+    "README.md",
+    "LICENSE"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build": "powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1",
+    "prepack": "powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1"
+  }
+}

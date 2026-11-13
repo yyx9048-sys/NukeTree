@@ -1,0 +1,1 @@
+{"name":"文件哈希校验","version":"1.0","description":"计算所选文件的 SHA256 / 大小 / 修改时间","author":"NukeTree","command":"run.ps1","args":"\"{path}\""}
