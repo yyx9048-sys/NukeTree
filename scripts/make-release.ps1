@@ -11,7 +11,7 @@ $dist = Join-Path $root 'dist'
 $rel = Join-Path $root 'release'
 $installer = Join-Path $PSScriptRoot 'installer'
 
-Write-Host '== 1/4 构建 ==' -ForegroundColor Cyan
+Write-Host '== 1/3 构建 ==' -ForegroundColor Cyan
 & (Join-Path $root 'build.ps1')
 if ($LASTEXITCODE -ne 0) { throw "构建失败（exit $LASTEXITCODE）" }
 
@@ -76,12 +76,12 @@ function New-Zip {
     Write-Host ("  生成 " + $name + "  (" + [math]::Round((Get-Item $ZipPath).Length / 1KB, 1) + " KB)  sha256=" + $hash) -ForegroundColor Green
 }
 
-Write-Host '== 2/4 绿色便携版 ==' -ForegroundColor Cyan
+Write-Host '== 2/3 绿色便携版 ==' -ForegroundColor Cyan
 $portableName = "NukeTree-$Version-win64"
 $portableDir = New-Portable -Name $portableName
 New-Zip -Dir $portableDir -ZipPath (Join-Path $rel ($portableName + '.zip'))
 
-Write-Host '== 3/4 安装版 ==' -ForegroundColor Cyan
+Write-Host '== 3/3 安装版 ==' -ForegroundColor Cyan
 $setupName = "$portableName-setup"
 $setupDir = Join-Path $rel $setupName
 if (Test-Path $setupDir) { Remove-Item $setupDir -Recurse -Force }
@@ -90,29 +90,6 @@ Copy-Item (Join-Path $portableDir '*') (Join-Path $setupDir 'payload') -Recurse 
 Copy-Item (Join-Path $installer 'install.ps1') $setupDir -Force
 Copy-Item (Join-Path $installer '安装.cmd') $setupDir -Force
 New-Zip -Dir $setupDir -ZipPath (Join-Path $rel ($setupName + '.zip'))
-
-Write-Host '== 4/4 npm tarball（可选） ==' -ForegroundColor Cyan
-$npmPkg = Join-Path $rel 'npm-package\package'
-if (Test-Path $npmPkg) { Remove-Item $npmPkg -Recurse -Force }
-New-Item -ItemType Directory -Path (Join-Path $npmPkg 'bin') -Force | Out-Null
-Copy-Item (Join-Path $root 'package.json') $npmPkg -Force
-Copy-Item (Join-Path $root 'bin\nuketree.js') (Join-Path $npmPkg 'bin') -Force
-Copy-Item (Join-Path $root 'README.md') $npmPkg -Force
-Copy-Item (Join-Path $root 'LICENSE') $npmPkg -Force
-New-Item -ItemType Directory -Path (Join-Path $npmPkg 'dist') -Force | Out-Null
-foreach ($f in @('NukeTree.exe', 'NukeTree.ps1', '应用图标.ico', '应用图标.png')) {
-    Copy-Item (Join-Path $dist $f) (Join-Path $npmPkg 'dist') -Force
-}
-Copy-Item (Join-Path $dist 'plugins') (Join-Path $npmPkg 'dist\plugins') -Recurse -Force
-Remove-Item (Join-Path $npmPkg 'dist\plugins\state.json') -ErrorAction SilentlyContinue
-$tgz = Join-Path $rel ("nuketree-$Version.tgz")
-if (Test-Path $tgz) { Remove-Item $tgz -Force }
-& tar -czf $tgz -C (Join-Path $rel 'npm-package') package
-if ($LASTEXITCODE -eq 0) {
-    Write-Host ("  生成 nuketree-$Version.tgz (" + [math]::Round((Get-Item $tgz).Length / 1KB, 1) + " KB)") -ForegroundColor Green
-} else {
-    Write-Warning 'tar 不可用，跳过 npm tarball（可改用 npm pack）'
-}
 
 Write-Host ''
 Write-Host '全部完成，产物在 release\：' -ForegroundColor Cyan

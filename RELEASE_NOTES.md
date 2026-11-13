@@ -6,19 +6,8 @@
 
 | 文件 | 说明 | SHA256 |
 |---|---|---|
-| `NukeTree-1.0.0-win64.zip` | **绿色便携版**，解压双击即用 | `E97DC17B2E428801E5C979FEB688E04DD648AAF9EBBF1AD58347D8DBCA82F5A8` |
-| `NukeTree-1.0.0-win64-setup.zip` | **安装版**（解压后运行 `安装.cmd`，装到 `%LOCALAPPDATA%\NukeTree` 并建开始菜单快捷方式，可一键卸载） | `F7F388FF4C81527DE82854F513848A86DC6E25242E1E613B8A4423113106F8DB` |
-
-也可通过 **npm** 安装（包内含预编译 exe，仅 Windows x64）：
-
-```powershell
-npm install -g nuketree
-nuketree
-# 或
-npx nuketree
-```
-
-npm 包文件：`nuketree-1.0.0.tgz`（仓库 `release/` 目录下，已按 npm 格式打包 `package/` 布局）
+| `NukeTree-1.0.0-win64.zip` | **绿色便携版**，解压双击即用 | `862B406617F38822B84DDBCEE8CD4AA707AD6BE6D5E7D498474A702322766AFF` |
+| `NukeTree-1.0.0-win64-setup.zip` | **安装版**（解压后运行 `安装.cmd`，装到 `%LOCALAPPDATA%\NukeTree` 并建开始菜单快捷方式，可一键卸载） | `C607FAB4A009D5BAE2EBB3BB5059CF61E6943FAE04D1AEA663E4B9B8AE7F1861` |
 
 校验：
 

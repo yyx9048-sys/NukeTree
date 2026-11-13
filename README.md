@@ -66,34 +66,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1
 
 直接运行 `dist\NukeTree.exe`；删除系统目录/服务请以管理员身份运行。
 
-## npm 安装
-
-软件包已发布为 npm 包 **`nuketree`**（仅 Windows x64，包内含预编译 exe）：
-
-```powershell
-npm install -g nuketree
-nuketree
-# 或免安装
-npx nuketree
-# 透传参数
-nuketree --kw=clash
-```
-
-发布（在 Windows 上执行，`prepack` 会自动调用 `build.ps1` 编译 exe）：
-
-```powershell
-npm login
-cd NukeTree
-npm publish --access public
-```
-
-仓库内置 GitHub Actions：
-
-- `.github/workflows/build-release.yml`：推 tag（如 `v1.0.0`）自动构建并创建 GitHub Release（附 zip + sha256）
-- `.github/workflows/publish-npm.yml`：Release 发布后自动 `npm publish`，需在仓库 Secrets 配置 `NPM_TOKEN`
-
-> 如需发布到 GitHub Packages（npm.pkg.github.com），包名需改为带作用域，例如 `@<你的账号>/nuketree`，并把 registry 指向 `https://npm.pkg.github.com`。
-
 ## 插件开发
 
 目录结构：
@@ -143,7 +115,7 @@ plugins/
 
 完整的发布流程（GitHub Release / npm / GitHub Packages）见 [PUBLISH.md](PUBLISH.md)。
 
-一键生成发布包（构建 + 便携版 zip + 安装版 zip + npm tarball + sha256）：
+一键生成发布包（构建 + 便携版 zip + 安装版 zip + sha256）：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\make-release.ps1 -Version 1.0.0
